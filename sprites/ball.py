@@ -5,15 +5,12 @@ from constants import *
 
 class Ball(RectShape):
     def __init__(self, color, size, x, y, x_vel, y_vel):
-        self.color = color
+        super().__init__(color, size, size)
         self.size = size
         self.start_x = x
         self.start_y = y
         self.start_x_vel = x_vel
         self.start_y_vel = y_vel
-
-        super().__init__(color, size, size)
-
         # Set initial position
         self.position = pygame.Vector2(x, y)
         self.velocity = pygame.Vector2(x_vel, y_vel)
@@ -45,17 +42,13 @@ class Ball(RectShape):
         """Bounce the ball off the paddle with spin based on paddle movement, and stronger horizontal effect near paddle edges."""
         # Reverse vertical velocity (always bounce up)
         self.velocity.y = -abs(self.velocity.y)
-
         # Calculate offset from paddle center (-1 to 1)
         offset = (self.position.x - paddle.position.x) / (paddle.rect.width / 2)
         offset = max(-1, min(1, offset)) # Clamp to [-1, 1]
-
         # Apply horizontal 'kick' from hit position
         self.velocity.x += offset * EDGE_BOUNCE_FACTOR
-
         # Add 'spin' based on paddle movement
         self.velocity.x += paddle.velocity.x * BALL_SPIN_FACTOR
-
         # Clamp speed
         self.clamp_speed()
             
@@ -65,7 +58,6 @@ class Ball(RectShape):
         # Determine overlap on each axis
         dx = (self.rect.centerx - brick.rect.centerx)
         dy = (self.rect.centery - brick.rect.centery)
-
         # Check dominant axis of collision
         if abs(dx) > abs(dy):
             # Horizontal collision

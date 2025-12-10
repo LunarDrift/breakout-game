@@ -4,10 +4,10 @@ from constants import BRICK_HEALTH_COLORS
 
 
 class Brick(RectShape):
-    def __init__(self, width, height, x, y, health=None):
+    def __init__(self, width, height, x, y, health=1):
         # Determine starting health
-        self.max_health = health if health is not None else 1
-        self.health = self.max_health
+        self.max_health = health
+        self.health = health
 
         # Set initial color based on health
         self.color = BRICK_HEALTH_COLORS[self.health]
@@ -22,6 +22,9 @@ class Brick(RectShape):
 
     def hit(self):
         """Call when the ball hits the brick."""
+        if self.health <= 0:
+            return  # Already destroyed
+        
         # Reduce health
         self.health -= 1
 

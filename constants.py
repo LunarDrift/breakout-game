@@ -1,7 +1,7 @@
 # game constants
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
-FPS = 120
+FPS = 244
 BG_COLOR = (0, 0, 0)
 MAX_LIVES = 3
 
