@@ -135,13 +135,42 @@ class GameScene:
 
         # Ball hits bricks
         hit_list = pygame.sprite.spritecollide(self.ball, self.bricks, False)
-        for brick in hit_list:
-            brick_was_alive = brick.health > 0
-            brick.hit()
-            if brick_was_alive and brick.health == 0:
-                self.score += BRICK_POINTS[brick.max_health]
-            self.ball.bounce_off_brick(brick)
-            break
+
+        if hit_list:
+            bounce_brick = None
+            min_overlap = float('inf')
+
+            for brick in hit_list:
+                # Calculate overlap amounts
+                overlap_left   = self.ball.rect.right  - brick.rect.left
+                overlap_right  = brick.rect.right - self.ball.rect.left
+                overlap_top    = self.ball.rect.bottom - brick.rect.top
+                overlap_bottom = brick.rect.bottom - self.ball.rect.top
+
+                # Keep only positive overlaps
+                overlaps = [val for val in (overlap_left, overlap_right, overlap_top, overlap_bottom) if val > 0]
+
+                # Find smallest overlap for this brick
+                if overlaps:
+                    brick_overlap = min(overlaps)
+                else:
+                    continue  # no valid overlap, skip
+
+                # Track brick with smallest overlap overall (bounce target)
+                if brick_overlap < min_overlap:
+                    min_overlap = brick_overlap
+                    bounce_brick = brick
+
+                # Apply damage / scoring
+                brick_was_alive = brick.health > 0
+                brick.hit()
+                if brick_was_alive and brick.health == 0:
+                    self.score += BRICK_POINTS[brick.max_health]
+
+            # Bounce once, using the brick with the smallest penetration
+            if bounce_brick:
+                self.ball.bounce_off_brick(bounce_brick)
+
 
         # Enforce minimum speed
         if self.ball.velocity.length() < BALL_MIN_SPEED:

@@ -55,14 +55,48 @@ class Ball(RectShape):
             
 
     def bounce_off_brick(self, brick):
-        """Bounce the ball off a brick, reversing the appropriate velocity component based on collision side. Supposed to deal with corner cases. Should help to make the game feel more like classic Breakout."""
-        # Determine overlap on each axis
-        dx = (self.rect.centerx - brick.rect.centerx)
-        dy = (self.rect.centery - brick.rect.centery)
-        # Check dominant axis of collision
-        if abs(dx) > abs(dy):
-            # Horizontal collision
+        """Bounce the ball off the brick based on overlap depth to determine true collision side."""
+
+        # Calculate overlap amounts on each side
+        overlap_left   = self.rect.right  - brick.rect.left
+        overlap_right  = brick.rect.right - self.rect.left
+        overlap_top    = self.rect.bottom - brick.rect.top
+        overlap_bottom = brick.rect.bottom - self.rect.top
+
+        # Only keep positive overlaps (actual penetration)
+        overlaps = {
+            "left":   overlap_left,
+            "right":  overlap_right,
+            "top":    overlap_top,
+            "bottom": overlap_bottom
+        }
+
+        # Filter out negative overlaps (no collision on that side)
+        overlaps = {side: val for side, val in overlaps.items() if val >= 0}
+
+        if not overlaps:
+            return  # No valid overlap — shouldn't happen, but safe guard.
+
+        # Determine the side with the smallest penetration depth
+        collision_side = min(overlaps, key=overlaps.get)
+
+        # Respond based on which side has the smallest overlap
+        if collision_side == "left":
+            self.rect.right = brick.rect.left
             self.velocity.x *= -1
-        else:
-            # Vertical collision
+
+        elif collision_side == "right":
+            self.rect.left = brick.rect.right
+            self.velocity.x *= -1
+
+        elif collision_side == "top":
+            self.rect.bottom = brick.rect.top
             self.velocity.y *= -1
+
+        elif collision_side == "bottom":
+            self.rect.top = brick.rect.bottom
+            self.velocity.y *= -1
+
+        # Sync logical position back to the rect
+        self.position.x = self.rect.centerx
+        self.position.y = self.rect.centery
