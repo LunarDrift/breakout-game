@@ -1,14 +1,16 @@
 import pygame
+from sys import exit
 
 
 class Menu:
     """Base class for all menus."""
-    def __init__(self, screen, options, font, font_color=(255, 255, 255), highlight_color=(255, 255, 0), spacing=50):
+    def __init__(self, screen, options, font, quit_callback, font_color=(255, 255, 255), highlight_color=(255, 255, 0), spacing=50):
         self.screen = screen
         self.options = options  # list of (label, callback) tuples
         self.font = font
         self.font_color = font_color
         self.highlight_color = highlight_color
+        self.quit_callback = quit_callback
         self.selected_index = 0
         self.spacing = spacing
 
@@ -17,6 +19,9 @@ class Menu:
         # Navigate up/down with keys
         # Activate option on Enter/Click
         for event in events:
+            if event.type == pygame.QUIT:
+                self.quit_callback()
+                exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     self.selected_index = (self.selected_index - 1) % len(self.options)

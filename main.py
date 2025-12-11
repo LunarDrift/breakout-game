@@ -2,7 +2,6 @@ import pygame
 from game import GameScene
 from menus.main_menu import MainMenu
 from menus.settings_menu import SettingsMenu
-from sprites import Ball, Paddle, Brick
 from constants import *
 
 
@@ -13,11 +12,35 @@ pygame.display.set_caption("Breakout!")
 clock = pygame.time.Clock()
 running = True
 
-# create game scene
-game_scene = GameScene(screen)
 
-# Example: current_scene = game_scene for testing gameplay
-current_scene = game_scene
+# functions to switch scenes
+def go_to_game():
+    global current_scene
+    current_scene = game_scene
+
+
+def go_to_settings():
+    global current_scene
+    current_scene = settings_menu
+
+
+def go_to_main_menu():
+    global current_scene
+    current_scene = main_menu
+
+
+def quit_game():
+    global running
+    running = False
+
+
+# create scenes
+main_menu = MainMenu(screen, go_to_game, go_to_settings, quit_game)
+settings_menu = SettingsMenu(screen, go_to_main_menu, quit_game)
+game_scene = GameScene(screen, go_to_main_menu, quit_game)
+
+# start with main menu
+current_scene = main_menu
 
 
 while running:

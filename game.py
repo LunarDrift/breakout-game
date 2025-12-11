@@ -4,8 +4,11 @@ from constants import *
 
 
 class GameScene:
-    def __init__(self, screen):
+    def __init__(self, screen, return_to_menu_callback, quit_callback):
         self.screen = screen
+        self.return_to_menu = return_to_menu_callback
+        self.quit_callback = quit_callback
+        
         self.all_sprites = pygame.sprite.Group()
         self.bricks = pygame.sprite.Group()
         self.score = 0
@@ -52,7 +55,7 @@ class GameScene:
         self.lives = MAX_LIVES
         self.score = 0
         # remove all existing bricks
-        for brick in self.bricks:
+        for brick in list(self.bricks):
             brick.kill()
         # respawn bricks
         self.spawn_brick_grid(BRICK_ROWS, BRICK_COUNT, BRICK_GAP, BRICK_TOP_Y, BRICK_HEIGHT)
@@ -64,13 +67,13 @@ class GameScene:
     def handle_input(self, events):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
-            pygame.quit()
-        self.player.update(0)
-
+            self.return_to_menu()
+            return
+        
         for event in events:
             if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
+                self.quit_callback()
+                return
 
     
     # ---------------- Update ----------------
