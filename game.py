@@ -4,11 +4,12 @@ from constants import *
 
 
 class GameScene:
-    def __init__(self, screen, settings, return_to_menu_callback, quit_callback):
+    def __init__(self, screen, settings, return_to_menu_callback, quit_callback, go_to_game_over_callback):
         self.screen = screen
         self.settings = settings
         self.return_to_menu = return_to_menu_callback
         self.quit_callback = quit_callback
+        self.go_to_game_over = go_to_game_over_callback
         
         self.all_sprites = pygame.sprite.Group()
         self.bricks = pygame.sprite.Group()
@@ -70,6 +71,9 @@ class GameScene:
         if keys[pygame.K_ESCAPE]:
             self.return_to_menu()
             return
+        if keys[pygame.K_q]:
+            self.quit_callback()
+            return
         
         for event in events:
             if event.type == pygame.QUIT:
@@ -94,6 +98,19 @@ class GameScene:
         self.screen.blit(lives_text, (10, 10))
 
 
+    def draw_to_surface(self, surface):
+        """Draws the current game state to the given surface. Used for freezing the game state in Game Over screen."""
+        surface.fill(BG_COLOR)
+        self.all_sprites.draw(surface)
+
+        # Draw score and lives
+        score_text = self.score_font.render(f"Score: {self.score}", True, SCORE_COLOR)
+        lives_text = self.score_font.render(f"Lives: {self.lives}", True, SCORE_COLOR)
+
+        surface.blit(score_text, (SCREEN_WIDTH // 2 - score_text.get_width() // 2, 10))
+        surface.blit(lives_text, (10, 10))
+
+
     # ---------------- Collision Handling ----------------
     def handle_collisions(self):
         # Ball bounce on walls
@@ -104,7 +121,11 @@ class GameScene:
         if self.ball.rect.bottom >= SCREEN_HEIGHT:
             self.lives -= 1
             if self.lives <= 0:
-                self.reset_game()
+                # Render snapshot of current frame
+                snapshot = pygame.Surface(self.screen.get_size())
+                self.draw_to_surface(snapshot)
+                # Switch to Game Over scene
+                self.go_to_game_over(self.score, snapshot)
             self.ball.reset(self.settings.ball_color)
             self.player.reset(self.settings.paddle_color)
 
