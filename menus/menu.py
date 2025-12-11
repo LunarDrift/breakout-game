@@ -16,12 +16,16 @@ class Menu:
 
 
     def handle_input(self, events):
-        # Navigate up/down with keys
-        # Activate option on Enter/Click
+        mouse_pos = pygame.mouse.get_pos()
+
+        
         for event in events:
             if event.type == pygame.QUIT:
                 self.quit_callback()
                 exit()
+
+            # Navigate up/down with keys
+            # Activate option on Enter/Click
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     self.selected_index = (self.selected_index - 1) % len(self.options)
@@ -33,6 +37,22 @@ class Menu:
                     if callback():
                         callback()
 
+            # Mouse input
+            elif event.type == pygame.MOUSEMOTION:
+                # Highlight the option the mouse is hovering over
+                for i, rect in enumerate(self.option_rects):
+                    if rect.collidepoint(mouse_pos):
+                        self.selected_index = i
+                        break
+
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                # Activate the clicked option
+                for i, rect in enumerate(self.option_rects):
+                    if rect.collidepoint(mouse_pos):
+                        label, callback = self.options[i]
+                        if callback():
+                            callback()
+                        break
 
     def update(self, dt):
         # Optional animations, transitions, etc.
@@ -46,8 +66,12 @@ class Menu:
         center_x = self.screen.get_width() // 2
         start_y = self.screen.get_height() // 2 - (len(self.options) * self.spacing) // 2
         
+        # Store option rects for mouse interaction
+        self.option_rects = []
+        
         for i, (label, _) in enumerate(self.options):
             color = self.highlight_color if i == self.selected_index else self.font_color
             text_surf = self.font.render(label, True, color)
             text_rect = text_surf.get_rect(center=(center_x, start_y + i * self.spacing))
             self.screen.blit(text_surf, text_rect)
+            self.option_rects.append(text_rect)
