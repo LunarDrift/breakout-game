@@ -12,6 +12,8 @@ PADDLE_WIDTH = 80
 PADDLE_HEIGHT = 20
 PADDLE_START_X = SCREEN_WIDTH // 2
 PADDLE_START_Y = SCREEN_HEIGHT - 40
+MAX_PADDLE_SHRINK = 0.5  # Paddle can shrink to 50% of original size
+MIN_PADDLE_WIDTH = PADDLE_WIDTH * MAX_PADDLE_SHRINK
 
 # score constants
 SCORE_COLOR = (255, 255, 255)
@@ -22,7 +24,7 @@ BALL_SIZE = 12
 BALL_INITIAL_SPEED = 290
 BALL_SPIN_FACTOR = 0.25  # tweak for feel; higher = more influence from paddle movement
 BALL_MIN_SPEED = 180
-BALL_MAX_SPEED = 480  # total vector length in pixels/second
+BALL_MAX_SPEED = 600  # total vector length in pixels/second
 BALL_MAX_X_SPEED = BALL_MAX_SPEED * 0.8 # prevents near-horizontal bounces
 EDGE_BOUNCE_FACTOR = 120 # adjust slightly to taste; higher = stronger bounce off edges
 BALL_START_X = SCREEN_WIDTH // 2
@@ -49,3 +51,4 @@ BRICK_HEALTH_COLORS = {
     4: (0, 128, 0),
     5: (0, 0, 255)
 }
+BRICK_SPEED_POINT_FACTOR = 1.5  # ball speed increase per brick hit based on toughness

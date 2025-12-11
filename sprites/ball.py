@@ -54,7 +54,7 @@ class Ball(RectShape):
         self.clamp_speed()
             
 
-    def bounce_off_brick(self, brick):
+    def bounce_off_brick(self, brick, brick_destroyed):
         """Bounce the ball off the brick based on overlap depth to determine true collision side."""
 
         # Calculate overlap amounts on each side
@@ -100,3 +100,12 @@ class Ball(RectShape):
         # Sync logical position back to the rect
         self.position.x = self.rect.centerx
         self.position.y = self.rect.centery
+
+        # Scale speed based on brick toughness
+        if brick_destroyed or BRICK_POINTS[brick.max_health] == min(BRICK_POINTS.values()):
+            current_speed = self.velocity.length()
+            boost = BRICK_POINTS[brick.max_health] * BRICK_SPEED_POINT_FACTOR
+            new_speed = min(current_speed + boost, BALL_MAX_SPEED)
+
+            # Scale velocity vector to match new speed
+            self.velocity.scale_to_length(new_speed)

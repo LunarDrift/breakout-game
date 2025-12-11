@@ -86,11 +86,28 @@ class GameScene:
         self.all_sprites.update(dt)
         self.handle_collisions()
 
+        # Paddle Shrink Handling
+        # Get ball vertical position
+        ball_y = self.ball.rect.centery
+
+        t = ball_y / SCREEN_HEIGHT
+        
+        # Calculate shrink factor based on ball height
+        scale = MAX_PADDLE_SHRINK + t * (1.0 - MAX_PADDLE_SHRINK)
+
+        # Compute new width and clamp to minimum width
+        new_width = int(PADDLE_WIDTH * scale)
+        self.player.set_size(new_width, self.player.height)
+
+        # Apply new width to paddle while keeping paddle height constant
+        self.player.set_size(new_width, self.player.height)
+
 
     # ---------------- Draw ----------------
     def draw(self):
         self.screen.fill(BG_COLOR)
         self.all_sprites.draw(self.screen)
+
         # Draw score and lives
         score_text = self.score_font.render(f"Score: {self.score}", True, SCORE_COLOR)
         self.screen.blit(score_text, (SCREEN_WIDTH // 2 - score_text.get_width() // 2, 10))
@@ -113,11 +130,15 @@ class GameScene:
 
     # ---------------- Collision Handling ----------------
     def handle_collisions(self):
-        # Ball bounce on walls
+        # Ball bounce on left/right walls
         if self.ball.rect.left <= 0 or self.ball.rect.right >= SCREEN_WIDTH:
             self.ball.velocity.x *= -1
+
+        # Ball bounce on top wall
         if self.ball.rect.top <= 0:
             self.ball.velocity.y *= -1
+
+        # Ball hits bottom (lose life)
         if self.ball.rect.bottom >= SCREEN_HEIGHT:
             self.lives -= 1
             if self.lives <= 0:
@@ -164,12 +185,13 @@ class GameScene:
                 # Apply damage / scoring
                 brick_was_alive = brick.health > 0
                 brick.hit()
-                if brick_was_alive and brick.health == 0:
+                brick_destroyed = brick_was_alive and brick.health == 0
+                if brick_destroyed:
                     self.score += BRICK_POINTS[brick.max_health]
 
             # Bounce once, using the brick with the smallest penetration
             if bounce_brick:
-                self.ball.bounce_off_brick(bounce_brick)
+                self.ball.bounce_off_brick(bounce_brick, brick_destroyed)
 
 
         # Enforce minimum speed

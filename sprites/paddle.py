@@ -5,6 +5,7 @@ class Paddle(RectShape):
     def __init__(self, color, width, height, x, y, speed):
         super().__init__(color, width, height)
 
+        self.color = color
         self.position = pygame.Vector2(x, y)
         self.speed = speed
         self.velocity = pygame.Vector2(0, 0)
