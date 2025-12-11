@@ -15,9 +15,9 @@ class Paddle(RectShape):
         keys = pygame.key.get_pressed()
 
         # Move left/right
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
             self.position.x -= self.speed * dt
-        if keys[pygame.K_d]:
+        if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             self.position.x += self.speed * dt
 
         # Keep paddle within screen bounds
