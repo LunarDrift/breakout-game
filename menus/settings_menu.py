@@ -5,13 +5,13 @@ from menus.menu import Menu
 class SettingsMenu(Menu):
     def __init__(self, screen, settings, back_callback, quit_callback):
         self.settings = settings
-        font = pygame.font.SysFont("Consolas", 40)
+        font = pygame.font.SysFont("Pixeled", 24)
         # Example settings options
         options = [
-                    (f"Paddle Color: {self.settings.paddle_color}", self.change_paddle_color),
-                    (f"Ball Color: {self.settings.ball_color}", self.change_ball_color),
-                    (f"Max Lives: {self.settings.max_lives}", self.change_max_lives),
-                    ("Back", back_callback)
+                    (f"PADDLE COLOR: {self.settings.paddle_color_name}", self.change_paddle_color),
+                    (f"BALL COLOR: {self.settings.ball_color_name}", self.change_ball_color),
+                    (f"MAX LIVES: {self.settings.max_lives}", self.change_max_lives),
+                    ("BACK", back_callback)
                 ]
 
         super().__init__(screen, options, font, quit_callback)
@@ -32,7 +32,7 @@ class SettingsMenu(Menu):
 
 
     def update_labels(self):
-        self.options[0] = (f"Paddle Color: {self.settings.paddle_color}", self.change_paddle_color)
-        self.options[1] = (f"Ball Color: {self.settings.ball_color}", self.change_ball_color)
-        self.options[2] = (f"Max Lives: {self.settings.max_lives}", self.change_max_lives)
-        self.options[3] = ("Back", self.options[3][1])  # keep back callback
+        self.options[0] = (f"PADDLE COLOR: {self.settings.paddle_color_name}", self.change_paddle_color)
+        self.options[1] = (f"BALL COLOR: {self.settings.ball_color_name}", self.change_ball_color)
+        self.options[2] = (f"MAX LIVES: {self.settings.max_lives}", self.change_max_lives)
+        self.options[3] = ("BACK", self.options[3][1])  # keep back callback

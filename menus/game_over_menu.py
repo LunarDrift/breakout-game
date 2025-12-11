@@ -11,8 +11,8 @@ class GameOverScene:
         self.quit_callback = quit_game
 
 
-        self.font = pygame.font.SysFont("Consolas", SCREEN_WIDTH // 30)
-        self.small_font = pygame.font.SysFont("Consolas", SCREEN_WIDTH // 50)
+        self.font = pygame.font.SysFont("Pixeled", SCREEN_WIDTH // 30)
+        self.small_font = pygame.font.SysFont("Pixeled", SCREEN_WIDTH // 50)
 
         # Semi-transparent overlay
         self.overlay = pygame.Surface(self.screen.get_size(), pygame.SRCALPHA)
@@ -42,9 +42,9 @@ class GameOverScene:
 
         # Draw text
         center_x = self.screen.get_width() // 2
-        self.screen.blit(self.font.render("GAME OVER", True, (255, 255, 255)),
-                         self.font.render("GAME OVER", True, (255, 255, 255)).get_rect(center=(center_x, 150)))
-        self.screen.blit(self.small_font.render(f"Score: {self.score}", True, (255, 255, 255)),
-                         self.small_font.render(f"Score: {self.score}", True, (255, 255, 255)).get_rect(center=(center_x, 250)))
-        self.screen.blit(self.small_font.render("Press R to Restart, Q to quit, or ESC to Menu", True, (255, 255, 255)),
-                         self.small_font.render("Press R to Restart, Q to quit, or ESC to Menu", True, (255, 255, 255)).get_rect(center=(center_x, 350)))
+        self.screen.blit(self.font.render("GAME OVER", True, (255, 0, 0)),
+                         self.font.render("GAME OVER", True, (255, 0, 0)).get_rect(center=(center_x, 150)))
+        self.screen.blit(self.small_font.render(f"FINAL SCORE: {self.score}", True, (255, 255, 255)),
+                         self.small_font.render(f"FINAL SCORE: {self.score}", True, (255, 255, 255)).get_rect(center=(center_x, 250)))
+        self.screen.blit(self.small_font.render("PRESS R TO RESTART, Q TO QUIT, OR ESC TO MENU", True, (255, 255, 255)),
+                         self.small_font.render("PRESS R TO RESTART, Q TO QUIT, OR ESC TO MENU", True, (255, 255, 255)).get_rect(center=(center_x, 350)))

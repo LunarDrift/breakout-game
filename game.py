@@ -15,7 +15,7 @@ class GameScene:
         self.bricks = pygame.sprite.Group()
         self.score = 0
         self.lives = self.settings.max_lives
-        self.score_font = pygame.font.SysFont("Consolas", SCREEN_WIDTH // 50)
+        self.score_font = pygame.font.SysFont("Pixeled", SCREEN_WIDTH // 70)
 
         # Game objects
         self.ball = Ball(self.settings.ball_color, BALL_SIZE, BALL_START_X, BALL_START_Y, BALL_INITIAL_SPEED, -BALL_INITIAL_SPEED)
@@ -65,6 +65,12 @@ class GameScene:
         self.player.reset(self.settings.paddle_color)
 
 
+    def next_round(self):
+        if len(self.bricks) == 0:
+            # respawn bricks
+            self.spawn_brick_grid(BRICK_ROWS, BRICK_COUNT, BRICK_GAP, BRICK_TOP_Y, BRICK_HEIGHT)
+
+
     # ---------------- Input handling ----------------
     def handle_input(self, events):
         keys = pygame.key.get_pressed()
@@ -75,10 +81,14 @@ class GameScene:
             self.quit_callback()
             return
         
+        if keys[pygame.K_t]:
+            for brick in list(self.bricks):
+                brick.kill()
+        
         for event in events:
             if event.type == pygame.QUIT:
                 self.quit_callback()
-                return
+                
 
     
     # ---------------- Update ----------------
@@ -87,13 +97,8 @@ class GameScene:
         self.handle_collisions()
 
         # Paddle Shrink Handling
-        # Get ball vertical position
-        ball_y = self.ball.rect.centery
-
-        t = ball_y / SCREEN_HEIGHT
-        
         # Calculate shrink factor based on ball height
-        scale = MAX_PADDLE_SHRINK + t * (1.0 - MAX_PADDLE_SHRINK)
+        scale = MAX_PADDLE_SHRINK + (self.ball.rect.centery / SCREEN_HEIGHT) * (1.0 - MAX_PADDLE_SHRINK)
 
         # Compute new width and clamp to minimum width
         new_width = int(PADDLE_WIDTH * scale)
@@ -109,10 +114,10 @@ class GameScene:
         self.all_sprites.draw(self.screen)
 
         # Draw score and lives
-        score_text = self.score_font.render(f"Score: {self.score}", True, SCORE_COLOR)
-        self.screen.blit(score_text, (SCREEN_WIDTH // 2 - score_text.get_width() // 2, 10))
-        lives_text = self.score_font.render(f"Lives: {self.lives}", True, SCORE_COLOR)
-        self.screen.blit(lives_text, (10, 10))
+        score_text = self.score_font.render(f"SCORE: {self.score}", True, SCORE_COLOR)
+        self.screen.blit(score_text, (SCREEN_WIDTH // 2 - score_text.get_width() // 2, 5))
+        lives_text = self.score_font.render(f"LIVES: {self.lives}", True, SCORE_COLOR)
+        self.screen.blit(lives_text, (10, 5))
 
 
     def draw_to_surface(self, surface):
@@ -121,8 +126,8 @@ class GameScene:
         self.all_sprites.draw(surface)
 
         # Draw score and lives
-        score_text = self.score_font.render(f"Score: {self.score}", True, SCORE_COLOR)
-        lives_text = self.score_font.render(f"Lives: {self.lives}", True, SCORE_COLOR)
+        score_text = self.score_font.render(f"SCORE: {self.score}", True, SCORE_COLOR)
+        lives_text = self.score_font.render(f"LIVES: {self.lives}", True, SCORE_COLOR)
 
         surface.blit(score_text, (SCREEN_WIDTH // 2 - score_text.get_width() // 2, 10))
         surface.blit(lives_text, (10, 10))

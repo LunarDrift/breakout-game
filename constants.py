@@ -1,7 +1,7 @@
 # game constants
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
-FPS = 244
+FPS = 60
 BG_COLOR = (0, 0, 0)
 MAX_LIVES = 3
 
@@ -14,6 +14,15 @@ PADDLE_START_X = SCREEN_WIDTH // 2
 PADDLE_START_Y = SCREEN_HEIGHT - 40
 MAX_PADDLE_SHRINK = 0.5  # Paddle can shrink to 50% of original size
 MIN_PADDLE_WIDTH = PADDLE_WIDTH * MAX_PADDLE_SHRINK
+PADDLE_COLORS = {
+        "GREEN": (128, 255, 0),
+        "CYAN": (0, 255, 255),
+        "MAGENTA": (255, 0, 255),
+        "YELLOW": (255, 255, 0),
+        "WHITE": (255, 255, 255),
+        "BLACK": (0, 0, 0),
+        "ORANGE": (255, 165, 0)
+    }
 
 # score constants
 SCORE_COLOR = (255, 255, 255)
@@ -29,6 +38,14 @@ BALL_MAX_X_SPEED = BALL_MAX_SPEED * 0.8 # prevents near-horizontal bounces
 EDGE_BOUNCE_FACTOR = 120 # adjust slightly to taste; higher = stronger bounce off edges
 BALL_START_X = SCREEN_WIDTH // 2
 BALL_START_Y = SCREEN_HEIGHT // 2
+BALL_COLORS = {
+        "GRAY": (224, 224, 224),
+        "WHITE": (255, 255, 255),
+        "BLACK": (0, 0, 0),
+        "LIGHT RED": (255, 100, 100),
+        "LIGHT GREEN": (100, 255, 100),
+        "LIGHT BLUE": (100, 100, 255)
+    }
 
 # brick constants
 BRICK_WIDTH = 64

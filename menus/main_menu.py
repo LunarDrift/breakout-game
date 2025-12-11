@@ -8,11 +8,11 @@ class MainMenu(Menu):
         self.open_settings_callback = open_settings_callback
         
         
-        font = pygame.font.SysFont("Consolas", 50)
+        font = pygame.font.SysFont("Pixeled", 32)
         options = [
-            ("Start Game", self.start_game),
-            ("Settings", self.open_settings),
-            ("Quit", self.quit_game)
+            ("START GAME", self.start_game),
+            ("SETTINGS", self.open_settings),
+            ("QUIT", self.quit_game)
         ]
 
         super().__init__(screen, options, font, quit_callback)

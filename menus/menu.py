@@ -1,5 +1,5 @@
 import pygame
-from sys import exit
+import sys
 
 
 class Menu:
@@ -13,6 +13,7 @@ class Menu:
         self.quit_callback = quit_callback
         self.selected_index = 0
         self.spacing = spacing
+        self.option_rects = []
 
 
     def handle_input(self, events):
@@ -22,7 +23,7 @@ class Menu:
         for event in events:
             if event.type == pygame.QUIT:
                 self.quit_callback()
-                exit()
+                sys.exit()
 
             # Navigate up/down with keys
             # Activate option on Enter/Click
@@ -34,8 +35,7 @@ class Menu:
                 elif event.key == pygame.K_RETURN:
                     # Activate the selected option
                     label, callback = self.options[self.selected_index]
-                    if callback():
-                        callback()
+                    callback()
 
             # Mouse input
             elif event.type == pygame.MOUSEMOTION:
@@ -50,8 +50,7 @@ class Menu:
                 for i, rect in enumerate(self.option_rects):
                     if rect.collidepoint(mouse_pos):
                         label, callback = self.options[i]
-                        if callback():
-                            callback()
+                        callback()
                         break
 
     def update(self, dt):

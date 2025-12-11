@@ -65,13 +65,13 @@ current_scene = main_menu
 
 while running:
     dt = clock.tick(FPS) / 1000  # limits FPS to 60
+    if current_scene == game_scene:
+        current_scene.next_round()
     events = pygame.event.get()
     current_scene.handle_input(events)
     current_scene.update(dt)
     current_scene.draw()
     pygame.display.flip()
 
-
-       
 
 pygame.quit()
