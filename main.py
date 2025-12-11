@@ -32,6 +32,11 @@ def go_to_main_menu():
     current_scene = main_menu
 
 
+def quit_game():
+    global running
+    running = False
+
+
 def go_to_game_over(score, background_surface):
     global current_scene, game_over_scene
     game_over_scene = GameOverScene(
@@ -39,14 +44,11 @@ def go_to_game_over(score, background_surface):
         score,
         background_surface,
         go_to_main_menu,
-        go_to_game
+        go_to_game,
+        quit_game
     )
     current_scene = game_over_scene
 
-
-def quit_game():
-    global running
-    running = False
 
 
 # initialize settings
