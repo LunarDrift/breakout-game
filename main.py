@@ -2,6 +2,7 @@ import pygame
 from game import GameScene
 from menus.main_menu import MainMenu
 from menus.settings_menu import SettingsMenu
+from settings import Settings
 from constants import *
 
 
@@ -15,7 +16,8 @@ running = True
 
 # functions to switch scenes
 def go_to_game():
-    global current_scene
+    global current_scene, game_scene
+    game_scene = GameScene(screen, settings, go_to_main_menu, quit_game)
     current_scene = game_scene
 
 
@@ -34,10 +36,13 @@ def quit_game():
     running = False
 
 
+# initialize settings
+settings = Settings()
+
 # create scenes
-main_menu = MainMenu(screen, go_to_game, go_to_settings, quit_game)
-settings_menu = SettingsMenu(screen, go_to_main_menu, quit_game)
-game_scene = GameScene(screen, go_to_main_menu, quit_game)
+main_menu = MainMenu(screen, settings, go_to_game, go_to_settings, quit_game)
+settings_menu = SettingsMenu(screen, settings, go_to_main_menu, quit_game)
+game_scene = GameScene(screen, settings, go_to_main_menu, quit_game)
 
 # start with main menu
 current_scene = main_menu

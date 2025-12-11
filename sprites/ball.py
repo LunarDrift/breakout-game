@@ -22,8 +22,9 @@ class Ball(RectShape):
         self.sync_rect()
 
 
-    def reset(self):
+    def reset(self, color):
         """Resets the ball to its starting position and velocity."""
+        self.color = color
         self.position = pygame.Vector2(self.start_x, self.start_y)
         self.velocity = pygame.Vector2(self.start_x_vel, self.start_y_vel)
         self.sync_rect()

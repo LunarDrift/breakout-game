@@ -2,7 +2,8 @@ import pygame
 from menus.menu import Menu
 
 class MainMenu(Menu):
-    def __init__(self, screen, start_game_callback, open_settings_callback, quit_callback):
+    def __init__(self, screen, settings, start_game_callback, open_settings_callback, quit_callback):
+        self.settings = settings
         self.start_game_callback = start_game_callback
         self.open_settings_callback = open_settings_callback
         

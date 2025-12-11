@@ -30,8 +30,9 @@ class Paddle(RectShape):
 
         self.sync_rect()
 
-    def reset(self):
+    def reset(self, color):
         """Resets the paddle to the center bottom of the screen."""
+        self.color = color
         screen_width = pygame.display.get_surface().get_width()
         screen_height = pygame.display.get_surface().get_height()
         self.position = pygame.Vector2(screen_width / 2, screen_height - 50)

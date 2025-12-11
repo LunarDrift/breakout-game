@@ -4,20 +4,21 @@ from constants import *
 
 
 class GameScene:
-    def __init__(self, screen, return_to_menu_callback, quit_callback):
+    def __init__(self, screen, settings, return_to_menu_callback, quit_callback):
         self.screen = screen
+        self.settings = settings
         self.return_to_menu = return_to_menu_callback
         self.quit_callback = quit_callback
         
         self.all_sprites = pygame.sprite.Group()
         self.bricks = pygame.sprite.Group()
         self.score = 0
-        self.lives = MAX_LIVES
+        self.lives = self.settings.max_lives
         self.score_font = pygame.font.SysFont("Consolas", SCREEN_WIDTH // 50)
 
         # Game objects
-        self.ball = Ball(BALL_COLOR, BALL_SIZE, BALL_START_X, BALL_START_Y, BALL_INITIAL_SPEED, -BALL_INITIAL_SPEED)
-        self.player = Paddle(PADDLE_COLOR, PADDLE_WIDTH, PADDLE_HEIGHT, PADDLE_START_X, PADDLE_START_Y, PADDLE_SPEED)
+        self.ball = Ball(self.settings.ball_color, BALL_SIZE, BALL_START_X, BALL_START_Y, BALL_INITIAL_SPEED, -BALL_INITIAL_SPEED)
+        self.player = Paddle(self.settings.paddle_color, PADDLE_WIDTH, PADDLE_HEIGHT, PADDLE_START_X, PADDLE_START_Y, PADDLE_SPEED)
 
         # Add objects to sprite groups
         self.all_sprites.add(self.ball, self.player)
@@ -52,15 +53,15 @@ class GameScene:
 
     
     def reset_game(self):
-        self.lives = MAX_LIVES
+        self.lives = self.settings.max_lives
         self.score = 0
         # remove all existing bricks
         for brick in list(self.bricks):
             brick.kill()
         # respawn bricks
         self.spawn_brick_grid(BRICK_ROWS, BRICK_COUNT, BRICK_GAP, BRICK_TOP_Y, BRICK_HEIGHT)
-        self.ball.reset()
-        self.player.reset()
+        self.ball.reset(self.settings.ball_color)
+        self.player.reset(self.settings.paddle_color)
 
 
     # ---------------- Input handling ----------------
@@ -104,8 +105,8 @@ class GameScene:
             self.lives -= 1
             if self.lives <= 0:
                 self.reset_game()
-            self.ball.reset()
-            self.player.reset()
+            self.ball.reset(self.settings.ball_color)
+            self.player.reset(self.settings.paddle_color)
 
         # Paddle bounce
         if pygame.sprite.collide_rect(self.ball, self.player):
