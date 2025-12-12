@@ -5,6 +5,7 @@ A classic Breakout clone made in Python using Pygame. The game is heavily inspir
 ### Features
 - Retro-style gameplay and graphics using simple rectangles
 - Paddle movement with keyboard controls
+- Paddle width changes as ball moves up and down
 - 5 rows of bricks to destroy, with each row a different color and toughness amount
 - Scoring system
 - Fully implemented game loop with start, play, and game over states
