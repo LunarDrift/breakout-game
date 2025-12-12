@@ -16,9 +16,9 @@ A classic Breakout clone made in Python using Pygame. The game is heavily inspir
 - Escape  -  Quit to main menu
 
 
-![alt text](.assets/gameplay1.gif "Example Gif")
-![alt text](.assets/menu.gif "Example Gif")
-![alt text](.assets/gameover.gif "Example Gif")
+![alt text](.assets/gameplay1.gif "Gameplay Example")
+![alt text](.assets/menu.gif "Menu Example")
+![alt text](.assets/gameover.gif "GameOver Example")
 
 
 
