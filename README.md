@@ -15,6 +15,14 @@ A classic Breakout clone made in Python using Pygame. The game is heavily inspir
 - Q  -  Quit Game
 - Escape  -  Quit to main menu
 
+
+![alt text](.assets/gameplay1.gif "Example Gif")
+![alt text](.assets/menu.gif "Example Gif")
+![alt text](.assets/gameover.gif "Example Gif")
+
+
+
+
 ### Project Structure
 ```
 breakout/
@@ -34,3 +42,5 @@ breakout/
 ├─ settings.py
 └─ main.py
 ```
+
+Game Font: [Pixeled](https://www.dafont.com/pixeled.font) 
